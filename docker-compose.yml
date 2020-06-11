@@ -1,0 +1,20 @@
+version: '2'
+services:
+    db_mongo:
+        container_name: db_mongo
+        image: 'mongo:3.4.1'
+        restart: always
+        ports:
+            - '30055:27017'
+        command: mongod --bind_ip 0.0.0.0  --noauth --smallfiles
+
+    project_xray:
+        container_name: project_xray
+        volumes:
+            - ~/.aws/:/root/.aws/:ro
+        build: ./.docker/project/xray
+        ports:
+            - '30062:2000'
+        environment: 
+            AWS_REGION: eu-east-2
+            profile: jfc
